@@ -1,0 +1,60 @@
+.loginCast {
+    --bs-gutter-x: 0;
+}
+
+.login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* height: 100vh; */
+}
+
+@keyframes slideInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+.fadIn {
+    opacity: 0;
+    transform: translateY(100%);
+    animation: slideInFromBottom 0.5s ease forwards;
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0%);
+    }
+}
+
+.fromRight {
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideInFromRight 0.5s ease forwards;
+}
+
+@keyframes slideOutToTop {
+    from {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}
+
+.slideOut {
+    animation: slideOutToTop 0.5s ease forwards;
+}
