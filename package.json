@@ -2,7 +2,7 @@
   "name": "mobile-data-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://AlexanderKnv.github.io/mobile-data-react-v2",
+  "homepage": "https://AlexanderKnv.github.io/mobileClient",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
