@@ -28,6 +28,7 @@ function Patch(props) {
     const [kkList, setKkList] = useState([]);
     const [isSignalDataLoading, setIsSignalDataLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const [messageOk, setMessageOk] = useState("");
     const [isReadOnly, setIsReadOnly] = useState(false);
   
     // useEffect(() => {
@@ -97,7 +98,7 @@ function Patch(props) {
                 setPortName(data.portName)
                 setPoiid1(poiId);
             }
-            if (Object.keys(data).length > 0 && data.zielportName === "" && !isPortName && data.portName != portName) {
+            if (Object.keys(data).length > 0 && data.zielportName === "" && !isPortName && data.portName !== portName) {
                 setPortName2(data.portName)
                 setPoiid2(poiId);
             }
@@ -214,38 +215,31 @@ function Patch(props) {
 
     const handlePatchenClick = async () => {
         try {
-            if(minCableLength > cableLength) {
-                setMessage("Mindestkabellänge darf nicht unterschritten werden");
-                setTimeout(() => {
-                    setMessage("");
-                }, 3000);
-                setCableLength(minCableLength);
-            } else {
-                if (poiid1 && poiid2 && selectedCableId) {
-                    console.log(signalwegChecked);
-                    const response = await fetch(API_URL + `importcable?poiid1=${poiid1}&poiid2=${poiid2}&ktidcable=${selectedCableId}&cablename=${cableName}&signalwegname=${signalwegChecked}&aufschlagKabellänge=${aufschlagKabellänge}`, {
-                        method: 'POST',
-                    });
-                    const result = await response.json();
-                    console.log('Patchen response:', result);
-                    mandatoryNeuVisualisieren();
-                    setPoiid1("");
-                    setPoiid2("");
-                    setPortName("");
-                    setPortName2("");
-                    setSignalData1([]);
-                    setSignalData2([]);
-                    setEndknoten1Value({});
-                    setEndknoten2Value({});
-                    setProductList([]);
-                    setCableLength("");
-                    setCableName(incrementCableName(localStorage.getItem("cableName")));
-                    setSelectedCableId(null);
-                    setKkList([]);
-                    setIsPortName(true);
-                    setMessage("");
-                    setSignalwegChecked("");
-                }
+            if (poiid1 && poiid2 && selectedCableId) {
+                console.log(cableName);
+                setMessage(" ");
+                setMessageOk(" ");
+                const response = await fetch(API_URL + `importcable?poiid1=${poiid1}&poiid2=${poiid2}&ktidcable=${selectedCableId}&cablename=${cableName}&signalwegname=${signalwegChecked}&aufschlagKabellänge=${aufschlagKabellänge}`, {
+                    method: 'POST',
+                });
+                const result = await response.json();
+                setPoiid1("");
+                setPoiid2("");
+                setPortName("");
+                setPortName2("");
+                setSignalData1([]);
+                setSignalData2([]);
+                setEndknoten1Value({});
+                setEndknoten2Value({});
+                setProductList([]);
+                setCableLength("");
+                setCableName(incrementCableName(localStorage.getItem("cableName")));
+                setSelectedCableId(null);
+                setKkList([]);
+                setIsPortName(true);
+                setSignalwegChecked("");
+                mandatoryNeuVisualisieren();
+                console.log('Patchen response:', result);
             }
         } catch (error) {
             console.error('Error while patching:', error);
@@ -266,9 +260,11 @@ function Patch(props) {
     const handleBlur = () => {
         if (cableLength < minCableLength) {
             setCableLength(minCableLength);
-            setMessage("Mindestkabellänge darf nicht unterschritten werden");
+            setMessage("Mindestkabellänge darf nicht unterschritten werden. ");
+            setMessageOk("Wert zurückgesetzt");
         } else {
             setMessage("");
+            setMessageOk("");
         }
     };
     const handleCableNameInput = (value) => {
@@ -282,16 +278,18 @@ function Patch(props) {
         setCableName(value);
     };
     const incrementCableName = (value) => {
-        const regex = /^(.*?)(\d+)$/;
-        const match = value.match(regex);
-        if (match) {
-            const textPart = match[1];
-            const numberPart = match[2];
-            const incrementedNumber = (parseInt(numberPart, 10) + 1).toString();
-            const incrementedNumberWithLeadingZeros = incrementedNumber.padStart(numberPart.length, '0');
-            const recommendedCableName = textPart + incrementedNumberWithLeadingZeros;
-            localStorage.setItem('cableName', recommendedCableName);
-            return recommendedCableName;
+        if (value) {
+            const regex = /^(.*?)(\d+)$/;
+            const match = value.match(regex);
+            if (match) {
+                const textPart = match[1];
+                const numberPart = match[2];
+                const incrementedNumber = (parseInt(numberPart, 10) + 1).toString();
+                const incrementedNumberWithLeadingZeros = incrementedNumber.padStart(numberPart.length, '0');
+                const recommendedCableName = textPart + incrementedNumberWithLeadingZeros;
+                localStorage.setItem('cableName', recommendedCableName);
+                return recommendedCableName;
+            }
         }
     };
 
@@ -371,7 +369,7 @@ function Patch(props) {
                                     </tr>
                                     <tr>
                                         <th className="p-0" scope="row">Kabellänge &#91;m&#93;</th>
-                                        <td className="p-0 pb-1"><input type="text" className="form-control form-control-sm" readOnly={isReadOnly} value={cableLength} onChange={(e) => handleCableLengthInput(e.target.value)} onBlur={handleBlur}/> <span style={{ color: 'red', fontSize: "14px" }}>{message}</span></td>
+                                        <td className="p-0 pb-1"><input type="text" className="form-control form-control-sm" readOnly={isReadOnly} value={cableLength} onChange={(e) => handleCableLengthInput(e.target.value)} onBlur={handleBlur}/> <span style={{ color: 'red', fontSize: "14px" }}>{message}</span> <span style={{ color: 'green', fontSize: "14px" }}>{messageOk}</span></td>
                                     </tr>
                                     <tr>
                                         <th className="p-0" scope="row">Kabelname</th>

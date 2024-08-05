@@ -20,6 +20,7 @@ import InfoImg from '../img/info.png';
 import SchrankInfoImg from '../img/Schrankbestückung.png';
 import AktualisierenImg from '../img/Aktualisieren.png';
 import AbmeldenImg from '../img/system-log-out-2.png';
+import useWindowSize from '../hook/useWindowSize';
 import "./SvgPage.css";
 
 const SvgPage = () => {
@@ -49,6 +50,8 @@ const SvgPage = () => {
     const [randomParam, setRandomParam] = useState(false);
     const [aufschlagKabellänge, setAufschlagKabellänge] = useState(localStorage.getItem('aufschlagKabellänge') || '0');
 
+    const { width, height } = useWindowSize();
+
     const authUser = async () => {
         try {
             const response = await fetch(API_URL + `connect?dbName=${location.state.selectedDB}&proId=${location.state.proId}`, {
@@ -68,7 +71,7 @@ const SvgPage = () => {
 
     const openSvg = async () => {
         setIsLoading(true);
-        const url = API_URL + `svg?type=Rack&id=${rackId}&ppvvisibility=${isPpvVisibility === '1' ? false : true}&instancetextobject=${isInstanceTextObject}&instancetextport=${isInstanceTextPort}&freetextobject=${isFreeTextObject}&freetextport=${isFreeTextPort}&ruletextobject=${isRuleTextObject}&ruletextport=${isRuleTextPort}`;
+        const url = API_URL + `svg?type=Rack&id=${rackId}&ppvvisibility=${isPpvVisibility === '1' ? false : true}&instancetextobject=${isInstanceTextObject}&instancetextport=${isInstanceTextPort}&freetextobject=${isFreeTextObject}&freetextport=${isFreeTextPort}&ruletextobject=${isRuleTextObject}&ruletextport=${isRuleTextPort}&width=${width}&height=${height}`;
         try {
             const response = await fetch(url);
             console.log(response)
@@ -82,13 +85,13 @@ const SvgPage = () => {
     };
     
     const neuVisualisieren = () => {
-        const url = API_URL + `svg?type=Rack&id=${rackId}&ppvvisibility=${isPpvVisibility === '1' ? false : true}&instancetextobject=${isInstanceTextObject}&instancetextport=${isInstanceTextPort}&freetextobject=${isFreeTextObject}&freetextport=${isFreeTextPort}&ruletextobject=${isRuleTextObject}&ruletextport=${isRuleTextPort}`;
+        const url = API_URL + `svg?type=Rack&id=${rackId}&ppvvisibility=${isPpvVisibility === '1' ? false : true}&instancetextobject=${isInstanceTextObject}&instancetextport=${isInstanceTextPort}&freetextobject=${isFreeTextObject}&freetextport=${isFreeTextPort}&ruletextobject=${isRuleTextObject}&ruletextport=${isRuleTextPort}&width=${width}&height=${height}`;
         setSvgContent(url);
     }
 
     const mandatoryNeuVisualisieren = () => {
         setRandomParam(Math.random());
-        const url = API_URL + `svg?type=Rack&id=${rackId}&ppvvisibility=${isPpvVisibility === '1' ? false : true}&instancetextobject=${isInstanceTextObject}&instancetextport=${isInstanceTextPort}&freetextobject=${isFreeTextObject}&freetextport=${isFreeTextPort}&ruletextobject=${isRuleTextObject}&ruletextport=${isRuleTextPort}&random=${randomParam}`;
+        const url = API_URL + `svg?type=Rack&id=${rackId}&ppvvisibility=${isPpvVisibility === '1' ? false : true}&instancetextobject=${isInstanceTextObject}&instancetextport=${isInstanceTextPort}&freetextobject=${isFreeTextObject}&freetextport=${isFreeTextPort}&ruletextobject=${isRuleTextObject}&ruletextport=${isRuleTextPort}&random=${randomParam}&width=${width}&height=${height}`;
         setSvgContent(url);
     }
 

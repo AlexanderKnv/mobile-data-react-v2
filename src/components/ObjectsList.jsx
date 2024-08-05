@@ -43,12 +43,18 @@ const ObjectsList = ({ plvId, objectType, setObjectType, onObjectSelect }) => {
     const handleSearch = (filterValue) => {
         if (filterValue.includes('*') || filterValue.includes('?')) {
             const regexPattern = filterValue
-              .split('*').join('.*')
-              .split('?').join('.');
-            const regex = new RegExp(`${regexPattern}`, 'i');
+            .split('*').join('.*')
+            .split('?').join('.');
+            const regex = new RegExp(`^${regexPattern}$`, 'i');
             setFilteredObjectNames(objectNames.filter((item) => regex.test(item.label)));
         } else {
             setFilteredObjectNames(objectNames.filter((item) => item.label.toLowerCase().startsWith(filterValue.toLowerCase())));
+        }
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
         }
     };
 
@@ -64,7 +70,7 @@ const ObjectsList = ({ plvId, objectType, setObjectType, onObjectSelect }) => {
                         </select>
                     </form>
                     <form className="d-flex" role="search">
-                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setFilterValue(e.target.value)}/>
+                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setFilterValue(e.target.value)} onKeyDown={handleKeyDown}/>
                     </form>
                 </div>
             </nav>
