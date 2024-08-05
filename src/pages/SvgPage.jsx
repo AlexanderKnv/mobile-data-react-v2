@@ -62,7 +62,7 @@ const SvgPage = () => {
                     },
             });
             if (response.ok) {
-                openSvg();
+                mandatoryNeuVisualisieren();
             }
         } catch (error) {
             console.error("Error during authentication:", error);
@@ -83,7 +83,7 @@ const SvgPage = () => {
             // setSvgContent(url);
         }
     };
-    
+
     const neuVisualisieren = () => {
         const url = API_URL + `svg?type=Rack&id=${rackId}&ppvvisibility=${isPpvVisibility === '1' ? false : true}&instancetextobject=${isInstanceTextObject}&instancetextport=${isInstanceTextPort}&freetextobject=${isFreeTextObject}&freetextport=${isFreeTextPort}&ruletextobject=${isRuleTextObject}&ruletextport=${isRuleTextPort}&width=${width}&height=${height}`;
         setSvgContent(url);
@@ -184,7 +184,7 @@ const SvgPage = () => {
     const handleAktualisieren = () => {
         authUser();
       };
-    
+
     return (
         <div className="container-fluid" style={{ padding: "0" }}>
             <div className="card bg-dark" style={{ minHeight: "100vh" }}>
@@ -203,15 +203,15 @@ const SvgPage = () => {
 
                     {isSearchOpen ? <Search handleSearchShow={handleSearchShow} handleRackIdChange={handleRackIdChange} plvId={plvId}/> : ""}
 
-                    {isSettingOpen ? <Setting handleSettingShow={handleSettingShow} 
+                    {isSettingOpen ? <Setting handleSettingShow={handleSettingShow}
                     handlePpvVisibilityChange={handlePpvVisibilityChange}
                     handleInstanceTextObjectChange={handleInstanceTextObjectChange}
                     handleInstanceTextPortChange={handleInstanceTextPortChange}
-                    handleFreeTextObjectChange={handleFreeTextObjectChange} 
+                    handleFreeTextObjectChange={handleFreeTextObjectChange}
                     handleFreeTextPortChange={handleFreeTextPortChange}
                     handleRuleTextObjectChange={handleRuleTextObjectChange}
                     handleRuleTextPortChange={handleRuleTextPortChange}
-                    isPpvVisibility={isPpvVisibility} 
+                    isPpvVisibility={isPpvVisibility}
                     isInstanceTextObject={isInstanceTextObject}
                     isInstanceTextPort={isInstanceTextPort}
                     isFreeTextObject={isFreeTextObject}
